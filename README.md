@@ -1,2 +1,0 @@
-# crowdsense
-Created by Rork
