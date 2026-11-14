@@ -4,6 +4,7 @@ import SwiftUI
 
 struct ScheduleScreen: View {
     let route: Route
+    var onOpenTrain: (TrainSchedule) -> Void
 
     @Environment(ThemeManager.self) private var themeManager
     @Environment(LanguageManager.self) private var languageManager
@@ -42,7 +43,9 @@ struct ScheduleScreen: View {
                 }
 
                 ForEach(schedules) { schedule in
-                    ScheduleRow(schedule: schedule)
+                    ScheduleRow(schedule: schedule) {
+                        onOpenTrain(schedule)
+                    }
                 }
             }
             .padding(16)
@@ -65,12 +68,13 @@ struct ScheduleScreen: View {
 
 struct ScheduleRow: View {
     let schedule: TrainSchedule
+    var onTap: () -> Void
 
     @Environment(ThemeManager.self) private var themeManager
     @Environment(LanguageManager.self) private var languageManager
 
     var body: some View {
-        NavigationLink(value: schedule) {
+        Button(action: onTap) {
             ThemedCard {
                 HStack(spacing: 12) {
                     // Departure → arrival
@@ -110,6 +114,7 @@ struct ScheduleRow: View {
             }
         }
         .buttonStyle(.plain)
+        .contentShape(Rectangle())
     }
 
     private var statusKey: String {

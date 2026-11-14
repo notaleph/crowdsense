@@ -9,7 +9,7 @@ struct TrainsScreen: View {
     @State private var selectedLine: TrainLine = .western
     @State private var originStation: Station?
     @State private var showDestinationSelector = false
-    @State private var path: [Route] = []
+    @State private var path = NavigationPath()
     @State private var pendingRoute: Route?
 
     var body: some View {
@@ -89,7 +89,9 @@ struct TrainsScreen: View {
             .navigationTitle(languageManager.t("trains"))
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: Route.self) { route in
-                ScheduleScreen(route: route)
+                ScheduleScreen(route: route) { schedule in
+                    path.append(schedule)
+                }
             }
         }
         .sheet(isPresented: $showDestinationSelector, onDismiss: {
